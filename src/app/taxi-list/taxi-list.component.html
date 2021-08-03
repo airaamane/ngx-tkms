@@ -1,0 +1,8 @@
+<app-taxi-list-item
+  *ngFor="let taxi of taxis"
+  [origin]="taxi.origin"
+  [destination]="taxi.destination"
+  [tarrif]="taxi.tarrif"
+  [selected]="selectedTaxiId === taxi._id"
+  (click)="_selectTaxi(taxi)"
+></app-taxi-list-item>

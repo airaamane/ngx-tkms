@@ -1,0 +1,18 @@
+<header
+  class="border py-6 mb-8 px-8 text-4xl bg-indigo-200 text-gray-600 sticky"
+>
+  <h2>Welcome to TKMS: Taxi Kbir Management System v1.0</h2>
+</header>
+<section class="flex p-4 max-h-screen">
+  <div class="w-1/3 overflow-auto">
+    <app-taxi-list
+      [taxis]="taxis$ | async"
+      [selectedTaxiId]="selectedTaxi?._id"
+      (selectTaxi)="selectTaxi($event)"
+    ></app-taxi-list>
+  </div>
+
+  <div class="flex-grow border rounded-lg border-indigo-400 h-2/3">
+    <app-taxi-form [taxi]="selectedTaxi" (resetTaxi)="selectTaxi(null)"></app-taxi-form>
+  </div>
+</section>
