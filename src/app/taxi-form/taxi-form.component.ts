@@ -22,6 +22,10 @@ import { TaxiModel } from '../config/taxi.model';
 export class TaxiFormComponent implements OnInit, OnChanges {
   @Input() public taxi: TaxiModel | null;
   @Output() public resetTaxi = new EventEmitter();
+  @Output() public addTaxi = new EventEmitter<
+    Pick<TaxiModel, 'origin' | 'destination' | 'tarrif'>
+  >();
+  @Output() public editTaxi = new EventEmitter<TaxiModel>();
 
   public form: FormGroup;
 
@@ -38,6 +42,9 @@ export class TaxiFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.taxi.currentValue === null && !changes.taxi?.isFirstChange()) {
+      this.form.reset();
+    }
     if (changes.taxi?.currentValue && !changes.taxi?.isFirstChange()) {
       const { origin, destination, tarrif } = changes.taxi.currentValue;
       this.form.setValue({ origin, destination, tarrif });
@@ -45,11 +52,12 @@ export class TaxiFormComponent implements OnInit, OnChanges {
   }
 
   public submitForm(): void {
-    console.warn('submitting', this.form.value);
+    this.taxi
+      ? this.editTaxi.emit({ _id: this.taxi._id, ...this.form.value })
+      : this.addTaxi.emit({ ...this.form.value });
   }
 
   public _resetTaxi(): void {
-    this.form.reset();
     this.resetTaxi.emit();
   }
 }

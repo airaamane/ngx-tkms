@@ -4,15 +4,21 @@
   <h2>Welcome to TKMS: Taxi Kbir Management System v1.0</h2>
 </header>
 <section class="flex p-4 max-h-screen">
-  <div class="w-1/3 overflow-auto">
+  <div class="w-1/3 overflow-auto mb-28">
     <app-taxi-list
       [taxis]="taxis$ | async"
       [selectedTaxiId]="selectedTaxi?._id"
-      (selectTaxi)="selectTaxi($event)"
+      (selectTaxi)="select($event)"
+      (removeTaxi)="remove($event)"
     ></app-taxi-list>
   </div>
 
   <div class="flex-grow border rounded-lg border-indigo-400 h-2/3">
-    <app-taxi-form [taxi]="selectedTaxi" (resetTaxi)="selectTaxi(null)"></app-taxi-form>
+    <app-taxi-form
+      [taxi]="selectedTaxi"
+      (resetTaxi)="select(null)"
+      (addTaxi)="add($event)"
+      (editTaxi)="edit($event)"
+    ></app-taxi-form>
   </div>
 </section>

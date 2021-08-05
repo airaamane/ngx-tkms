@@ -14,6 +14,7 @@ export class TaxiListItemComponent implements OnInit {
 
 
 
+
   constructor() {}
 
   ngOnInit(): void {}
