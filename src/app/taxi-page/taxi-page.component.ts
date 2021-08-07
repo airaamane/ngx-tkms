@@ -30,9 +30,10 @@ export class TaxiPageComponent implements OnInit {
   }
 
   public add(taxi: Pick<TaxiModel, 'origin' | 'destination' | 'tarrif'>): void {
-    this.taxis$ = this.taxiService
-      .add(taxi)
-      .pipe(switchMap(() => this.taxiService.all()));
+    this.taxis$ = this.taxiService.add(taxi).pipe(
+      tap(() => this.select(null)),
+      switchMap(() => this.taxiService.all())
+    );
   }
 
   public edit(taxi: TaxiModel): void {
@@ -42,11 +43,9 @@ export class TaxiPageComponent implements OnInit {
   }
 
   public remove(id: string): void {
-    this.taxis$ = this.taxiService
-      .delete(id)
-      .pipe(
-        tap(() => this.select(null)),
-        switchMap(() => this.taxiService.all())
-      );
+    this.taxis$ = this.taxiService.delete(id).pipe(
+      tap(() => this.select(null)),
+      switchMap(() => this.taxiService.all())
+    );
   }
 }
