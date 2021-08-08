@@ -6,7 +6,7 @@ import { TaxiModel, TaxiModelRequired } from '../config/taxi.model';
 import { TaxiService } from '../services/taxi.service';
 import { TaxiAPIActions } from '../state/taxis-api.actions';
 import { TaxiPageActions } from '../state/taxis.actions';
-import { AppState } from '../state/taxis.state';
+import { AppState } from '../state/app.state';
 
 @Component({
   selector: 'app-taxi-page',
