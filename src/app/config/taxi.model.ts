@@ -4,3 +4,5 @@ export interface TaxiModel {
   destination: string;
   tarrif: number;
 }
+
+export type TaxiModelRequired = Pick<TaxiModel, 'origin' | 'destination' | 'tarrif'>;

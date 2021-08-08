@@ -16,7 +16,7 @@
   <div class="flex-grow border rounded-lg border-indigo-400 h-2/3">
     <app-taxi-form
       [taxi]="selectedTaxi"
-      (resetTaxi)="select(null)"
+      (resetTaxi)="clear()"
       (addTaxi)="add($event)"
       (editTaxi)="edit($event)"
     ></app-taxi-form>

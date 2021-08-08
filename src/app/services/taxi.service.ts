@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TAXIS } from '../config/data';
-import { TaxiModel } from '../config/taxi.model';
+import { TaxiModel, TaxiModelRequired } from '../config/taxi.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class TaxiService {
   }
 
   add(
-    taxi: Pick<TaxiModel, 'origin' | 'destination' | 'tarrif'>
+    taxi: TaxiModelRequired
   ): Observable<TaxiModel> {
     return this.http.post<TaxiModel>(`${environment.base_url}`, {
       ...taxi,

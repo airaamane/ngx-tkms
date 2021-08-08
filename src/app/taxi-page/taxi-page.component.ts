@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { TaxiModel } from '../config/taxi.model';
+import { tap } from 'rxjs/operators';
+import { TaxiModel, TaxiModelRequired } from '../config/taxi.model';
 import { TaxiService } from '../services/taxi.service';
 
 @Component({
@@ -16,36 +16,47 @@ export class TaxiPageComponent implements OnInit {
   constructor(private taxiService: TaxiService) {}
 
   ngOnInit(): void {
-    this.taxis$ = this.taxiService.all();
+    this.getTaxis();
   }
 
   public select(taxi: TaxiModel | null): void {
-    if (taxi === null) {
-      this.selectedTaxi = null;
-    } else {
-      this.taxiService
-        .oneById(taxi._id)
-        .subscribe((res) => (this.selectedTaxi = res));
-    }
+    this.taxiService
+      .oneById(taxi._id)
+      .subscribe((res) => (this.selectedTaxi = res));
   }
 
-  public add(taxi: Pick<TaxiModel, 'origin' | 'destination' | 'tarrif'>): void {
-    this.taxis$ = this.taxiService.add(taxi).pipe(
-      tap(() => this.select(null)),
-      switchMap(() => this.taxiService.all())
-    );
+  public getTaxis(): void {
+    this.taxis$ = this.taxiService.all();
+  }
+
+  public clear(): void {
+    this.selectedTaxi = null;
+  }
+
+  public add(taxi: TaxiModelRequired): void {
+    this.taxiService
+      .add(taxi)
+      .pipe(
+        tap(() => this.clear()),
+        tap(() => this.getTaxis())
+      )
+      .subscribe();
   }
 
   public edit(taxi: TaxiModel): void {
-    this.taxis$ = this.taxiService
+    this.taxiService
       .update(taxi)
-      .pipe(switchMap(() => this.taxiService.all()));
+      .pipe(tap(() => this.getTaxis()))
+      .subscribe();
   }
 
   public remove(id: string): void {
-    this.taxis$ = this.taxiService.delete(id).pipe(
-      tap(() => this.select(null)),
-      switchMap(() => this.taxiService.all())
-    );
+    this.taxiService
+      .delete(id)
+      .pipe(
+        tap(() => this.clear()),
+        tap(() => this.getTaxis())
+      )
+      .subscribe();
   }
 }
