@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TAXIS } from '../config/data';
 import { TaxiModel, TaxiModelRequired } from '../config/taxi.model';
 import { map } from 'rxjs/operators';
 
