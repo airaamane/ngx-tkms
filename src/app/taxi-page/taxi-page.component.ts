@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { concatMap, mergeMap, tap } from 'rxjs/operators';
 import { TaxiModel, TaxiModelRequired } from '../config/taxi.model';
 import { TaxiService } from '../services/taxi.service';
+
 import { TaxiAPIActions } from '../state/taxis-api.actions';
 import { TaxiPageActions } from '../state/taxis.actions';
 import { AppState } from '../state/taxis.state';
@@ -24,6 +25,7 @@ export class TaxiPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(TaxiPageActions.enter());
+
     this.taxis$ = this.taxiService
       .all()
       .pipe(
@@ -31,6 +33,9 @@ export class TaxiPageComponent implements OnInit {
           this.store.dispatch(TaxiAPIActions.fetchTaxisSuccess({ taxis }))
         )
       );
+
+    this.taxis$ = this.taxiService.all();
+
   }
 
   public select(taxi: TaxiModel | null): void {
@@ -53,6 +58,7 @@ export class TaxiPageComponent implements OnInit {
       tap((taxiAdded) =>
         this.store.dispatch(TaxiAPIActions.addTaxiSuccess({ taxi: taxiAdded }))
       ),
+      tap(() => this.clear()),
       concatMap(() => this.taxiService.all())
     );
   }
